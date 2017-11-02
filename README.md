@@ -12,7 +12,9 @@ how to deploy the project on a live system.
 
 ### Prerequisites
 
-*TBD*
+* Python 3
+* PostgreSQL 9.x or 10.x
+* gpg v2 (for example decryption)
 
 ### Installing
 
