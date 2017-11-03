@@ -1,0 +1,15 @@
+"""Console output reporting."""
+
+import datetime
+import texttable
+
+def report(config, verification_result, scrubbing_result):
+    """Print a table of results."""
+    table = texttable.Texttable()
+    table.set_deco(table.VLINES)
+    table.add_row(['Backup File', config['filename']])
+    table.add_row(['Report Timestamp', datetime.datetime.utcnow().isoformat()])
+    for t in verification_result:
+        table.add_row(['Test: {}'.format(t['test_name']), str(t['result'])])
+    table.add_row(['Scrub Successful?', str(scrubbing_result['scrub_successful'])])
+    print(table.draw())

@@ -12,7 +12,7 @@ how to deploy the project on a live system.
 
 ### Prerequisites
 
-* Python 3
+* Python 3.5+
 * PostgreSQL 9.x or 10.x
 * gpg v2 (for example decryption)
 

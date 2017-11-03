@@ -1,0 +1,53 @@
+# Erawan Configuration File
+---
+plugins:
+    retrieval:
+        name: singlefile
+    decryption:
+        name: gnupg2
+        gpg2_path: /usr/bin/gpg2
+        mode: symmetric
+    verification:
+        name: has_tables
+    scrubbing:
+        name: scrub
+        scrub_path: /usr/bin/scrub
+        pattern: fillzero
+    reporting:
+        name: console
+
+working_path: /tmp/erawan
+
+postgresql:
+    bin_path: /usr/lib/postgresql/9.6/bin
+
+
+# ========================================================================
+# Logging Settings
+# ----------------
+# These should remain mostly static; the only fields which you may choose
+# to change are the logging level, and the output format.
+# ========================================================================
+logging:
+    # ---------------------------
+    # Debug Level   Numeric value
+    # ---------------------------
+    # CRITICAL      50
+    # ERROR         40
+    # WARNING       30
+    # INFO          20
+    # DEBUG         10
+    # ---------------------------
+    level: &logging_level 30
+    version: 1
+    formatters:
+        f:
+            format: "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
+    handlers:
+        h:
+            class: logging.StreamHandler
+            formatter: f
+            level: *logging_level
+    root:
+        handlers: h
+        level: *logging_level
