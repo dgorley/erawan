@@ -21,7 +21,6 @@ working_path: /tmp/erawan
 postgresql:
     bin_path: /usr/lib/postgresql/9.6/bin
 
-
 # ========================================================================
 # Logging Settings
 # ----------------
