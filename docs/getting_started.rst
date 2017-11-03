@@ -1,6 +1,20 @@
 Getting Started with Erawan
 ===========================
 
+Impatient? Try this...
+----------------------
+::
+    
+    $ sudo apt install postgresql python python3 gnupg2
+    $ git clone https://github.com/dgorley/erawan.git
+    $ python3 -m venv erawan.venv
+    $ source erawan.venv/bin/activate
+    $ cd erawan
+    $ pip install -r requirements.txt
+    $ pip install .
+    $ vim config.yml  # Set postgresql.bin_path
+    $ ERAWAN_DECRYPTION_KEY=1234 erawan -f sample/provinces.sql.asc
+
 Prerequisites
 -------------
 
