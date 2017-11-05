@@ -8,6 +8,9 @@ python:
   - "3.7-dev" # 3.7 development branch
   - "nightly"
 # command to install dependencies
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y scrub
 install:
   - pip install -r requirements.txt
   - pip install .
