@@ -1,5 +1,7 @@
 # Erawan - Automated Backup Verification for PostgreSQL
 
+[![Build Status](https://travis-ci.org/dgorley/erawan.svg?branch=master)](https://travis-ci.org/dgorley/erawan)
+
 Erawan is designed to improve your confidence in your PostgreSQL backups by
 regularly retrieving, decrypting, restoring, and testing them, and reporting
 out on the results.
