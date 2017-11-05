@@ -15,12 +15,13 @@ import erawan.postgresql
 
 logger = None
 
-def read_command_line():
+def read_command_line(args):
     """Parse arguments supplied on the command line."""
     parser = argparse.ArgumentParser(description="PostgreSQL backup verification")
     parser.add_argument('-C', '--config', default=None, help='Config file (default config.yml in working dir)')
     parser.add_argument('-f', '--filename', help="Backup filename (for singlefile mode)")
-    return parser.parse_args()
+    parser.add_argument('-q', '--quiet', action='store_true', help="Quiet mode (don't print results to stdout)")
+    return parser.parse_args(args)
 
 def read_config_file(config_file=None):
     """Read the contents of the configuration file."""
@@ -69,14 +70,16 @@ def process_backup(config, backup_file):
     verification_result = plugin['verification'].verify(config)
     erawan.postgresql.stop(config)
     scrubbing_result = plugin['scrubbing'].scrub(config)
-    plugin['reporting'].report(config, verification_result, scrubbing_result)
+    return plugin['reporting'].report(config, verification_result, scrubbing_result)
 
-def main():
+def main(args=None):
     """The main routine."""
     # Process configuration.
-    args = read_command_line()
-    config_file = read_config_file(args.config)
-    config = merge_configs(args, config_file)
+    if args is None:
+        args = sys.argv[1:]
+    clargs = read_command_line(args=args)
+    config_file = read_config_file(clargs.config)
+    config = merge_configs(clargs, config_file)
 
     # Initiate logging
     dictConfig(config['logging'])
@@ -92,8 +95,17 @@ def main():
     os.makedirs(config['working_path'], exist_ok=True)
 
     # Backup processing loop
+    result_set = []
     for backup_file in plugin['retrieval'].fetch(config):
-        process_backup(config, backup_file)
+        result = process_backup(config, backup_file)
+        if not config['quiet']:
+            print(result)
+        result_set.append(result)
+    return result_set
+
+def entrypoint_main(args=None):
+    main(args)
+    return
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

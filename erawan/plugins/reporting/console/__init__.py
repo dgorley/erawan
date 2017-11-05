@@ -12,4 +12,5 @@ def report(config, verification_result, scrubbing_result):
     for t in verification_result:
         table.add_row(['Test: {}'.format(t['test_name']), str(t['result'])])
     table.add_row(['Scrub Successful?', str(scrubbing_result['scrub_successful'])])
-    print(table.draw())
+    result = table.draw()
+    return result

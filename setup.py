@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'erawan = erawan.__main__:main'
+            'erawan = erawan.__main__:entrypoint_main'
         ]
     },
 )
