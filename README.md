@@ -1,4 +1,4 @@
-![Erawan Logo](https://raw.githubusercontent.com/dgorley/erawan/master/docs/images/erawan_logo.png)
+![Erawan Logo](https://github.com/dgorley/erawan/blob/master/docs/images/erawan_logo.png)
 
 # Erawan - Automated Backup Verification for PostgreSQL
 
