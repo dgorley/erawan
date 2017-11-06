@@ -1,3 +1,5 @@
+.. image:: images/erawan_logo.png
+
 Erawan: Automated Backup Verification for PostgreSQL
 ====================================================
 

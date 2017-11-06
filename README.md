@@ -1,3 +1,5 @@
+![Erawan Logo](https://raw.githubusercontent.com/dgorley/erawan/master/docs/images/erawan_logo.png)
+
 # Erawan - Automated Backup Verification for PostgreSQL
 
 [![Build Status](https://travis-ci.org/dgorley/erawan.svg?branch=master)](https://travis-ci.org/dgorley/erawan)
