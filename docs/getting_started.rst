@@ -4,7 +4,7 @@ Getting Started with Erawan
 Impatient? Try this...
 ----------------------
 ::
-    
+
     $ sudo apt install postgresql python python3 gnupg2
     $ git clone https://github.com/dgorley/erawan.git
     $ python3 -m venv erawan.venv
@@ -121,20 +121,20 @@ Plugins
 ~~~~~~~
 Erawan uses five different types of plugins to direct its behaviour.  They are:
 
-Retrieval Plugins
+:ref:`plugins-retrieval`
     These identify the backups to be fed to Erawan for verification.
 
-Decryption Plugins
+:ref:`plugins-decryption`
     These decrypt encrypted backups.
 
-Verification Plugins
+:ref:`plugins-verification`
     These provide the tests to confirm whether or not a backup is "valid".
 
-Scrubbing Plugins
+:ref:`plugins-scrubbing`
     These securely remove the retrieved backups, along with the PostgreSQL
     cluster used for verification, from the filesystem.
 
-Reporting Plugins
+:ref:`plugins-reporting`
     These provide the output from the verification process.
 
 Working Path
