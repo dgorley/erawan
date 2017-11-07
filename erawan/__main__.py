@@ -2,6 +2,7 @@
 
 import argparse
 import importlib
+import json
 import logging
 from logging.config import dictConfig
 import os
@@ -19,7 +20,8 @@ def read_command_line(args):
     """Parse arguments supplied on the command line."""
     parser = argparse.ArgumentParser(description="PostgreSQL backup verification")
     parser.add_argument('-C', '--config', default=None, help='Config file (default config.yml in working dir)')
-    parser.add_argument('-f', '--filename', help="Backup filename (for singlefile mode)")
+    parser.add_argument('-e', '--extra-vars', default='{}', help='Extra vars overriding config file (in JSON)')
+    parser.add_argument('-f', '--filename', default=None, help="Backup filename (for singlefile mode)")
     parser.add_argument('-q', '--quiet', action='store_true', help="Quiet mode (don't print results to stdout)")
     return parser.parse_args(args)
 
@@ -33,12 +35,12 @@ def read_config_file(config_file=None):
         config = {}
     return config
 
-def merge_configs(cmdline, config):
+def merge_configs(cmdline, config_file):
     """Merge the command line and config parameters."""
     cmdline = vars(cmdline)
-    for key in cmdline:
-        if cmdline[key] is not None:
-            config[key] = cmdline[key]
+    cmdline = {k: cmdline[k] for k in cmdline if cmdline[k] is not None}
+    extra_config = json.loads(cmdline['extra_vars'])
+    config = {**config_file, **extra_config, **cmdline}
     return config
 
 def load_plugins(config):
@@ -70,7 +72,7 @@ def process_backup(config, backup_file):
     verification_result = plugin['verification'].verify(config)
     erawan.postgresql.stop(config)
     scrubbing_result = plugin['scrubbing'].scrub(config)
-    return plugin['reporting'].report(config, verification_result, scrubbing_result)
+    return plugin['reporting'].report(config, backup_file, verification_result, scrubbing_result)
 
 def main(args=None):
     """The main routine."""
