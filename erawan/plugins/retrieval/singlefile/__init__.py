@@ -14,7 +14,7 @@ def fetch(config):
         shutil.copy(config['filename'], config['working_path'])
         logger.info('Retrieved backup file %s', config['filename'])
     except:
-        logger.critical('Unable to rerieve backup file %s', config['filename'])
+        logger.critical('Unable to retrieve backup file %s', config['filename'])
         sys.exit(1)
     backup = os.path.join(config['working_path'], os.path.basename(config['filename']))
     yield backup
