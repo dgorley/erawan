@@ -10,7 +10,12 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 def fetch(config):
-    """Watch the designated folder for changes."""
+    """Watch the designated folder for changes.
+
+    Required arguments:
+        backup_path: The directory to watch for backup files.
+        stop_file: The name of a file which, of found, will halt operations.
+    """
     i = inotify.adapters.Inotify()
     watch_dir = bytes(config['plugins']['retrieval']['backup_path'], 'utf8')
     i.add_watch(watch_dir)
@@ -20,6 +25,8 @@ def fetch(config):
                 (header, type_names, watch_path, filename) = event
                 logger.debug("WD=(%d) MASK=(%d) COOKIE=(%d) LEN=(%d) MASK->NAMES=%s WATCH-PATH=[%s] FILENAME=[%s]", header.wd, header.mask, header.cookie, header.len, type_names, watch_path.decode('utf-8'), filename.decode('utf-8'))
                 if type_names == ['IN_CLOSE_WRITE']:
+                    if filename.decode('utf-8') == config['plugins']['retrieval']['stop_file']:
+                        return
                     backup_path = os.path.join(watch_path.decode('utf-8'), filename.decode('utf-8'))
                     logger.info('Found new backup file %s', backup_path)
                     yield backup_path

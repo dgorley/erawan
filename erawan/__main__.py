@@ -5,6 +5,7 @@ import importlib
 import json
 import logging
 from logging.config import dictConfig
+import multiprocessing
 import os
 import os.path
 import sys
@@ -35,12 +36,22 @@ def read_config_file(config_file=None):
         config = {}
     return config
 
+def deep_update(original, update):
+    """Update dict without overwriting objects."""
+    for key, value in original.items():
+        if key not in update:
+            update[key] = value
+        elif isinstance(value, dict):
+            deep_update(value, update[key])
+    return update
+
 def merge_configs(cmdline, config_file):
     """Merge the command line and config parameters."""
     cmdline = vars(cmdline)
     cmdline = {k: cmdline[k] for k in cmdline if cmdline[k] is not None}
     extra_config = json.loads(cmdline['extra_vars'])
-    config = {**config_file, **extra_config, **cmdline}
+    config = deep_update(config_file, extra_config)
+    config = deep_update(config, cmdline)
     return config
 
 def load_plugins(config):
@@ -74,7 +85,7 @@ def process_backup(config, backup_file):
     scrubbing_result = plugin['scrubbing'].scrub(config)
     return plugin['reporting'].report(config, backup_file, verification_result, scrubbing_result)
 
-def main(args=None):
+def main(args=None, result_queue=None):
     """The main routine."""
     # Process configuration.
     if args is None:
@@ -103,6 +114,9 @@ def main(args=None):
         if not config['quiet']:
             print(result)
         result_set.append(result)
+        # If run in a multiprocessing context, push the result to the queue.
+        if result_queue is not None:
+            result_queue.put(result)
     return result_set
 
 def entrypoint_main(args=None):
