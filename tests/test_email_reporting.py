@@ -6,7 +6,7 @@ from unittest.mock import patch
 from erawan.__main__ import main
 
 
-def test_email_reporting():
+def test_email_reporting_without_auth():
     os.environ["ERAWAN_DECRYPTION_KEY"] = "1234"
     main_args = [
         "-q",
