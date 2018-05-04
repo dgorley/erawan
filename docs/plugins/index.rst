@@ -111,3 +111,19 @@ console
 
 The console plugin prints a simple table with the verification and scrubbing
 results to stdout.
+
+email
+~~~~~
+
+The email plugin uses the same table output as the console plugin, but delivers
+it via email.
+
+Parameters
+''''''''''
+  * ``smtp_server``: The URL of the SMTP server used to deliver email.
+  * ``username``: The username to connect to the SMTP server. (optional)
+  * ``password``: The password to connect to the SMTP server. (optional)
+  * ``subject``: The subject line of the email.
+  * ``from``: The reported sender of the email.
+  * ``to``: The recipient(s) of the email.
+  

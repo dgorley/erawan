@@ -3,8 +3,9 @@
 import datetime
 import texttable
 
-def report(config, backup_file, verification_result, scrubbing_result):
-    """Print a table of results."""
+
+def generate_report_table(backup_file, verification_result, scrubbing_result):
+    """Generate a table containing verification results."""
     table = texttable.Texttable()
     table.set_deco(table.VLINES)
     table.add_row(['Backup File', backup_file])
@@ -14,3 +15,8 @@ def report(config, backup_file, verification_result, scrubbing_result):
     table.add_row(['Scrub Successful?', str(scrubbing_result['scrub_successful'])])
     result = table.draw()
     return result
+
+
+def report(config, backup_file, verification_result, scrubbing_result):
+    """Print a table of results."""
+    return generate_report_table(backup_file, verification_result, scrubbing_result)
