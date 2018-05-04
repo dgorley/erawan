@@ -5,125 +5,16 @@ Erawan is designed for flexibility, utilizing plugins to perform it's key
 functions.  These plugins are categorized below.
 
 .. _plugins-retrieval:
-
-Retrieval Plugins
------------------
-
-Retrieval plugins identify the backups to be fed to Erawan for verification.
-
-singlefile
-~~~~~~~~~~
-
-The singlefile plugin processes a single PostgreSQL backup file, specified
-on the command line with the ``-f`` flag.
-
-Example::
-
-    $ erawan -f mybackup.bak.enc
-
-poll_directory
-~~~~~~~~~~~~~~
-
-The poll_directory plugin uses ``inotify`` to monitor a directory for changes.
-When a file is *closed* in that directory (indicating file creation or edit is
-complete), the file is processed as a backup file.  The monitoring can be
-terminated by creating a "stop file" in the folder, with a specified name.
-All files, including the stop file, will be processed in the order in which
-they were closed, meaning that backup files closed prior to the stop file will
-still be processed.
-
-Parameters
-''''''''''
-  * ``backup_path``: The full path to the directory which should be monitored
-    for new backup files.
-  * ``stop_file``: The name of a file which, when placed in the backup path,
-    will act a a signal to Erawan to stop backup processing and exit.
+.. include:: retrieval.rst
 
 .. _plugins-decryption:
-
-Decryption Plugins
-------------------
-
-Decryption plugins decrypt encrypted backups, so that they can be restored and
-verified.
-
-gnupg2
-~~~~~~
-
-The gnupg2 plugin uses GnuPG2 symmetric encryption to decrypt a backup.  To
-prevent snooping of encryption keys, the key is not provided as a command line
-argument; set the environment variable ``ERAWAN_DECRYPTION_KEY`` to the key
-which should be used for decryption.
-
-Parameters
-''''''''''
-  * ``gpg2_path``: The full path to the ``gpg2`` executable.
-  * ``mode``: The type of encryption to use.  Only ``symmetric`` is currently
-    supported.
-
+.. include:: decryption.rst
 
 .. _plugins-verification:
-
-Verification Plugins
---------------------
-
-Verification plugins provide the tests to confirm whether or not a backup is
-"valid".  This could range from simply confirming that the database is
-restorable to examining data in the restored database.
-
-has_tables
-~~~~~~~~~~
-
-The has_tables plugin simply tests that there is a non-zero number of tables
-in the database's public schema.
-
+.. include:: verification.rst
 
 .. _plugins-scrubbing:
-
-Scrubbing Plugins
------------------
-
-Scrubbing plugins securely remove the retrieved backups, along with the
-PostgreSQL cluster used for verification, from the filesystem.
-
-scrub
-~~~~~
-
-The scrub plugin uses the ``scrub`` utility to securely remove the backup files
-and PostgreSQL cluster from the filesystem.
-
-Parameters
-''''''''''
-  * ``scrub_path``: The full path to the ``scrub`` executable.
-  * ``pattern``: The type of scrubbing pattern to use.  For a list of available
-    patterns, see ``man scrub``.
-
+.. include:: scrubbing.rst
 
 .. _plugins-reporting:
-
-Reporting Plugins
------------------
-
-Reporting plugins provide the output from the verification process.
-
-console
-~~~~~~~
-
-The console plugin prints a simple table with the verification and scrubbing
-results to stdout.
-
-email
-~~~~~
-
-The email plugin uses the same table output as the console plugin, but delivers
-it via email.
-
-Parameters
-''''''''''
-  * ``smtp_server``: The URL of the SMTP server used to deliver email.
-  * ``username``: The username to connect to the SMTP server. (optional)
-  * ``password``: The password to connect to the SMTP server. (optional)
-  * ``subject``: The subject line of the email.
-  * ``from``: The reported sender of the email.
-  * ``to``: The recipient(s) of the email.
-  
+.. include:: reporting.rst
